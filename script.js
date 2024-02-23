@@ -1,4 +1,3 @@
-//your JS code here. If required.
 describe('Login Form', () => {
   it('displays login form with correct elements', () => {
     cy.visit('http://localhost:3000'); // Replace with the correct URL
