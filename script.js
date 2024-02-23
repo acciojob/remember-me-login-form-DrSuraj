@@ -1,23 +1,37 @@
-describe('Login Form', () => {
-  it('displays login form with correct elements', () => {
-    cy.visit('http://localhost:3000'); // Replace with the correct URL
+document.addEventListener('DOMContentLoaded', function() {
+  const loginForm = document.getElementById('loginForm');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const rememberCheckbox = document.getElementById('checkbox');
+  const submitButton = document.getElementById('submit');
 
-    // Check if the heading "Login Form" is displayed
-    cy.get('h1').should('contain', 'Login Form');
+  submitButton.addEventListener('click', function(event) {
+    event.preventDefault();
+    const username = usernameInput.value;
+    const password = passwordInput.value;
 
-    // Check if the username input field is present
-    cy.get('#username').should('exist');
+    if (rememberCheckbox.checked) {
+      localStorage.setItem('username', username);
+      localStorage.setItem('password', password);
+    } else {
+      localStorage.removeItem('username');
+      localStorage.removeItem('password');
+    }
 
-    // Check if the password input field is present
-    cy.get('#password').should('exist');
-
-    // Check if the "Remember me" checkbox is present
-    cy.get('#checkbox').should('exist');
-
-    // Check if the label "Remember me" is correctly associated with the checkbox
-    cy.get('label[for="checkbox"]').should('contain', 'Remember me');
-
-    // Check if the submit button is present
-    cy.get('#submit').should('exist');
+    alert(`Logged in as ${username}`);
   });
+
+  // Check if there are saved details
+  const savedUsername = localStorage.getItem('username');
+  const savedPassword = localStorage.getItem('password');
+
+  if (savedUsername && savedPassword) {
+    const existingButton = document.createElement('button');
+    existingButton.id = 'existing';
+    existingButton.textContent = 'Login as existing user';
+    existingButton.addEventListener('click', function() {
+      alert(`Logged in as ${savedUsername}`);
+    });
+    loginForm.appendChild(existingButton);
+  }
 });
